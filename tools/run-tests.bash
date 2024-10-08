@@ -3,12 +3,16 @@
 set -euo pipefail
 
 for test in build/tests/test-*; do
+    if [[ ! -f "$test" ]]; then
+        continue
+    fi
+
     test_name=${test#"build/tests/test-"}
 
     printf "Running test: $test_name ... "
 
     if [ -z ${VALGRIND+x} ]; then
-        LD_LIBRARY_PATH=build/lib ${test}
+        LD_LIBRARY_PATH=build/lib ${test} 2> "$test.stderr"
     else
         LD_LIBRARY_PATH=build/lib "$VALGRIND" ${test}
     fi

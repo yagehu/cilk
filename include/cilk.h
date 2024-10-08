@@ -1,5 +1,5 @@
-#ifndef cilk_H
-#define cilk_H
+#ifndef CILK_H
+#define CILK_H
 
 #define __USE_XOPEN
 #include <sys/types.h>
@@ -7,23 +7,19 @@
 #include <pthread.h>
 #include <unistd.h>
 
-void cilk_start(void);
-void cilk_stop(void);
-
-struct cilk_managed_thread {
-    pthread_t               pthread;
-    struct chan *           tx;
-    struct shared_context * ctx;
+struct cilk_thread {
+    pthread_t * pthread;
 };
 
-int cilk_managed_thread_create(
-    struct cilk_managed_thread * thread,
-    const pthread_attr_t * restrict attr,
+void cilk_model(void (* f)(void *), void * arg);
+
+int cilk_spawn(
+    struct cilk_thread * thread,
     void * (* start_routine)(void *),
     void * restrict arg
 );
 
-int cilk_managed_thread_join(struct cilk_managed_thread thread, void ** retval);
+int cilk_join(struct cilk_thread thread, void ** ret);
 
 int cilk_rand(void);
 

@@ -52,12 +52,12 @@ $(target_lib_static): $(objs) | $(build_lib_dir)
 
 $(target_lib_shared): $(objs) | $(build_lib_dir)
 	@echo "    Creating shared library $@"
-	$(hide)$(CC) -shared -o $@ $(objs)
+	$(hide)$(CC) -g -shared -o $@ $(objs)
 
 define generateObjRules
 $$(build_dir)/$(1).o: $$(srcs_dir)/$(1).c $$(hdrs) | $$(build_dir)
 	@echo "    Building object $$@"
-	$$(hide)$$(CC) -g -c -fPIC -std=c11 $$(include_args) -o $$@ $$< -MMD
+	$$(hide)$$(CC) -g -c -fPIC -std=c11 $$(include_args) -o $$@ $$<
 endef
 
 define generateTestRules

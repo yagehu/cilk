@@ -1,6 +1,7 @@
 #include "cilk.h"
 
+static void func(void * arg) {}
+
 int main(void) {
-    cilk_start();
-    cilk_stop();
+    cilk_model(func, NULL);
 }
